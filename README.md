@@ -25,7 +25,7 @@ The below sections detail how to get set up for training the Noise2Noise network
 
 This code is tested with Python 3.6.  We're using [Anaconda 5.2](https://www.anaconda.com/download/) to manage the Python environment.  Here's how to create a clean environment and install library dependencies:
 
-```
+```shell
 conda create -n n2n python=3.6
 conda activate n2n
 conda install tensorflow-gpu
@@ -41,7 +41,7 @@ This section explains how to prepare a dataset into a TFRecords file for use in 
 
 **Training dataset for ImageNet**: To generate the ImageNet validation set tfrecords file, run:
 
-```
+```shell
 # This should run through roughly 50K images and output a file called `datasets/imagenet_val_raw.tfrecords`.
 python dataset_tool_tf.py --input-dir "<path_to_imagenet>/ILSVRC2012_img_val" --out=datasets/imagenet_val_raw.tfrecords
 ```
@@ -69,13 +69,13 @@ Download the [BSD300 dataset](https://www2.eecs.berkeley.edu/Research/Projects/C
 
 Convert the images in BSD300 training set into a tfrecords file:
 
-```
+```shell
 python dataset_tool_tf.py --input-dir datasets/BSDS300-images/BSDS300/images/train --out=datasets/bsd300.tfrecords
 ```
 
 **Kodak validation set**.  Training tests validation loss against the [Kodak Lossless True Color Image Suite](http://r0k.us/graphics/kodak/) dataset.  Here's how to prepare this dataset for use during training:
 
-```
+```shell
 # Download the kodak validation set from http://r0k.us/graphics/kodak/
 python download_kodak.py --output-dir=datasets/kodak
 ```
@@ -84,14 +84,14 @@ python download_kodak.py --output-dir=datasets/kodak
 
 To train the noise2noise autoencoder on ImageNet:
 
-```
+```shell
 # try python config.py train --help for available options
 python config.py --desc='-test' train --train-tfrecords=datasets/imagenet_val_raw.tfrecords --long-train=true --noise=gaussian
 ```
 
 You can inspect the training process using TensorBoard:
 
-```
+```shell
 cd results
 tensorboard --logdir .
 ```
@@ -106,7 +106,7 @@ Once you've trained a network, you can run a validation dataset through the netw
 
 Suppose your training run results were stored under `results/00001-autoencoder-1gpu-L-n2n`.  Here's how to run a set of images through this network:
 
-```
+```shell
 python config.py validate --dataset-dir=datasets/kodak --network-snapshot=results/00001-autoencoder-1gpu-L-n2n/network_final.pickle
 ```
 
@@ -146,7 +146,7 @@ Use the `dataset_tool_mri.py` script to generate training and validation dataset
 
 **Step #2**: Convert the IXI-T1 dataset into a set of PNG files:
 
-```
+```shell
 # Assumes you have downloaded and untarred IXI-T1 under ~/Downloads/IXI-T1.
 
 python dataset_tool_mri.py genpng --ixi-dir=~/Downloads/IXI-T1 --outdir=datasets/ixi-png
@@ -154,13 +154,13 @@ python dataset_tool_mri.py genpng --ixi-dir=~/Downloads/IXI-T1 --outdir=datasets
 
 **Step #3**: Convert a subset of the IXI-T1 dataset into training and validation sets:
 
-```
+```shell
 python dataset_tool_mri.py genpkl --png-dir=datasets/ixi-png --pkl-dir=datasets
 ```
 
 ### Training
 
-```
+```shell
 python config_mri.py
 ```
 
